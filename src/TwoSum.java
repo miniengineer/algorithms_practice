@@ -89,5 +89,33 @@ public class TwoSum {
 
     }
 
+    public static int[] lessVerboseTwoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> numToIndexMap = new HashMap<Integer,Integer>();
+
+        // since we know that there are exactly two numbers to return
+        // we don't care if there are two duplicated nums
+        // and the second nums index will overwrite the first
+        // because when looping through the nums the first index is known -> j
+        // and all we need to do is find and add the secondNum index
+        for (int i = 0; i < nums.length; i++) {
+            numToIndexMap.put(nums[i], i);
+        }
+
+        for (int j = 0; j < nums.length; j++) {
+            int secondNum = target - nums[j];
+
+            // the second if statement is for cases like nums = [3,2,4], target = 6
+            // the output must be [1,2], but if we don't have it the result would be [0,0]
+            // as we have 3 in our hashmap
+            // so if the index is the same then we're looking at the same number
+            if (numToIndexMap.containsKey(secondNum) && numToIndexMap.get(secondNum) != j) {
+                return new int[] { j, numToIndexMap.get(secondNum) };
+            }
+        }
+
+        return null;
+
+    }
+
 
 }
