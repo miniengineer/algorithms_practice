@@ -38,7 +38,8 @@
 //    Explanation: The only substrings that contain all five vowels also contain consonants,
 //    so there are no vowel substrings.
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CountVowelSubstringsOfAString {
     public static void main(String[] args) {
@@ -56,32 +57,24 @@ public class CountVowelSubstringsOfAString {
     // Space complexity O(1) - hashmap is constant to 5 vowels
     public static int countVowelSubstrings(String word) {
         int totalSubstrings = 0;
-        int vowelsCount = 0;
 
-        // how to store vowels?
-        // hashmap for now
-        HashMap<String,Boolean> vowels = new HashMap<>();
-        vowels.put("a", false);
-        vowels.put("e", false);
-        vowels.put("i", false);
-        vowels.put("u", false);
-        vowels.put("o", false);
+        // One HashSet to store vowels
+        // Another HashSet to keep count
+        Set<Character> vowelSet = Set.of('a', 'e', 'i', 'o', 'u'), curr = new HashSet<>();
 
         for (int i = 0; i < word.length(); i++) {
-            String letterOne = String.valueOf(word.charAt(i));
-            if (vowels.containsKey(letterOne)) {
-                vowels.put(letterOne, true);
-                vowelsCount++;
+            Character letterOne = new Character(word.charAt(i));
+            if (vowelSet.contains(letterOne)) {
+                curr.add(letterOne);
 
                 for (int j = i + 1; j < word.length(); j++) {
-                    String letterTwo = String.valueOf(word.charAt(j));
-                    if (vowels.containsKey(letterTwo)) {
-                        if (!vowels.get(letterTwo)) {
-                            vowels.put(letterTwo, true);
-                            vowelsCount++;
+                    Character letterTwo = new Character(word.charAt(j));
+                    if (vowelSet.contains(letterTwo)) {
+                        if (!curr.contains(letterTwo)) {
+                            curr.add(letterTwo);
                         }
 
-                        if (vowelsCount == 5) {
+                        if (vowelSet.size() == curr.size()) {
                             totalSubstrings++;
                         }
                     } else {
@@ -89,13 +82,8 @@ public class CountVowelSubstringsOfAString {
                     }
                 }
 
-                vowelsCount = 0;
+                curr.clear();
 
-                vowels.put("a", false);
-                vowels.put("e", false);
-                vowels.put("i", false);
-                vowels.put("u", false);
-                vowels.put("o", false);
             }
         }
 
