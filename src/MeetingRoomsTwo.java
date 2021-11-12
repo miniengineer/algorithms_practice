@@ -34,6 +34,9 @@ public class MeetingRoomsTwo {
         // don't actually need to sort, since using MinHeap
         // Arrays.sort(intervals, (int[] m1, int[] m2) -> m1[0] - m2[0]);
 
+        // Also possible to use the Integer comparison function:
+        // Arrays.sort(intervals, (a, b) -> Integer.compare(a.start, b.start) );
+
         // add start and end times to min heaps
         for (int[] meeting : intervals) {
             startTimes.add(meeting[0]);
