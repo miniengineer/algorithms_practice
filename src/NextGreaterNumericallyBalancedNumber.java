@@ -72,7 +72,7 @@ public class NextGreaterNumericallyBalancedNumber {
             remainder = num % 10; // 1
             arr[remainder]++;
 
-            num /= 10; // 300.1  300
+            num /= 10; // will be 300, not 300.1 cause type is int
         }
 
         for (int i = 0; i < arr.length; i++) {
