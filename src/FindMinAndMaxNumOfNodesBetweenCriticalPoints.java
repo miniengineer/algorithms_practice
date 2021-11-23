@@ -46,7 +46,7 @@ public class FindMinAndMaxNumOfNodesBetweenCriticalPoints {
         // must be [1,3]
     }
 
-    // Time Complexity is O(n) - where is the # of nodes
+    // Time Complexity is O(n) - where n is the # of nodes
     // Space Complexity is O(1)
     public static int[] nodesBetweenCriticalPoints(ListNode head) {
         // in case there are less than 2 critical points => [-1, -1]
@@ -54,42 +54,41 @@ public class FindMinAndMaxNumOfNodesBetweenCriticalPoints {
 
         int[] noCriticalPoint = { -1, -1 };
 
-        if (head.next.next == null) return noCriticalPoint;
+        if (head.next == null || head.next.next == null) return noCriticalPoint;
 
         // keep track of the node we're currently at
-        int node = 2;
-        int prevVal = head.val;
+        int currNodeIndex = 2;
+        int prevNodeVal = head.val;
         Integer minDist = Integer.MAX_VALUE;
 
         ListNode currNode = head.next;
-        int prevNodeVal = 0;
-        int firstPoint = 0;
-
+        int prevCriticalPointIndex = 0;
+        int firstCriticalPointIndex = 0;
 
         // loop until there is no next node to compare
         while (currNode.next != null) {
-            boolean localMinima = currNode.val < prevVal && currNode.val < currNode.next.val;
-            boolean localMaxima = currNode.val > prevVal && currNode.val > currNode.next.val;
+            boolean localMinima = currNode.val < prevNodeVal && currNode.val < currNode.next.val;
+            boolean localMaxima = currNode.val > prevNodeVal && currNode.val > currNode.next.val;
 
             if (localMinima || localMaxima) {
-                if (prevNodeVal != 0) {
-                    minDist = Math.min(minDist, node - prevNodeVal);
+                if (prevCriticalPointIndex != 0) {
+                    minDist = Math.min(minDist, currNodeIndex - prevCriticalPointIndex);
                 } else {
-                    firstPoint = node;
+                    firstCriticalPointIndex = currNodeIndex;
                 }
-                prevNodeVal = node;
+                prevCriticalPointIndex = currNodeIndex;
             }
 
-            prevVal = currNode.val;
+            prevNodeVal = currNode.val;
             currNode = currNode.next;
-            node++;
+            currNodeIndex++;
         }
 
 
         // there are only two critical points
-        if (prevNodeVal == firstPoint) return noCriticalPoint;
+        if (prevCriticalPointIndex == firstCriticalPointIndex) return noCriticalPoint;
 
-        int maxDist = prevNodeVal - firstPoint;
+        int maxDist = prevCriticalPointIndex - firstCriticalPointIndex;
 
         return new int[] { minDist, maxDist };
     }
